@@ -4,12 +4,14 @@ interface GraphNode {
   id: string;
   label: string;
   type?: string;
+  description?: string;
 }
 
 interface GraphEdge {
   source: string;
   target: string;
   weight?: number;
+  type?: string;
 }
 
 interface GraphData {
@@ -55,37 +57,45 @@ const GraphVisualization: React.FC = () => {
     try {
       setLoading(true);
       
-      // Fetch the GraphML file from the GraphRAG output
-      const response = await fetch('/graphrag-workspace/output/graph.graphml');
-      const graphmlText = await response.text();
+      // Fetch graph data from the backend API
+      const response = await fetch('http://localhost:8000/graph-data');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       
-      // Parse the GraphML data
-      const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(graphmlText, 'text/xml');
+      const data = await response.json();
       
-      // Extract nodes
-      const nodeElements = xmlDoc.querySelectorAll('node');
-      const nodes: GraphNode[] = Array.from(nodeElements).map(node => {
-        const id = node.getAttribute('id') || '';
-        return {
-          id,
-          label: formatLabel(id),
-          type: categorizeNode(id)
-        };
-      });
+      // The API already provides properly formatted nodes and edges
+      const nodes: GraphNode[] = data.nodes.map((node: any) => ({
+        id: node.id,
+        label: node.label,
+        type: node.type,
+        description: node.description
+      }));
       
-      // Extract edges
-      const edgeElements = xmlDoc.querySelectorAll('edge');
-      const edges: GraphEdge[] = Array.from(edgeElements).map(edge => {
-        const source = edge.getAttribute('source') || '';
-        const target = edge.getAttribute('target') || '';
-        const weightElement = edge.querySelector('data[key="d0"]');
-        const weight = weightElement ? parseFloat(weightElement.textContent || '0') : 0.5;
-        
-        return { source, target, weight };
-      });
+      const edges: GraphEdge[] = data.edges.map((edge: any) => ({
+        source: edge.source,
+        target: edge.target,
+        weight: edge.weight,
+        type: edge.type
+      }));
       
       setGraphData({ nodes, edges });
+      console.log(`Loaded ${data.total_nodes} nodes and ${data.total_edges} edges from entities.parquet`);
+      
+      // Debug: Check edge-node ID matching
+      const nodeIds = new Set(nodes.map(n => n.id));
+      const edgeSources = new Set(edges.map(e => e.source));
+      const edgeTargets = new Set(edges.map(e => e.target));
+      
+      const matchingSources = [...edgeSources].filter(id => nodeIds.has(id));
+      const matchingTargets = [...edgeTargets].filter(id => nodeIds.has(id));
+      
+      console.log('Node IDs sample:', [...nodeIds].slice(0, 5));
+      console.log('Edge sources sample:', [...edgeSources].slice(0, 5));
+      console.log('Edge targets sample:', [...edgeTargets].slice(0, 5));
+      console.log(`Matching sources: ${matchingSources.length}/${edgeSources.size}`);
+      console.log(`Matching targets: ${matchingTargets.length}/${edgeTargets.size}`);
     } catch (error) {
       console.error('Error loading GraphRAG data:', error);
       // Fallback to mock data if loading fails
@@ -119,44 +129,6 @@ const GraphVisualization: React.FC = () => {
     setGraphData(mockData);
   };
 
-  const formatLabel = (id: string): string => {
-    // Convert uppercase IDs to readable labels
-    return id.replace(/_/g, ' ')
-             .split(' ')
-             .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-             .join(' ');
-  };
-
-  const categorizeNode = (id: string): string => {
-    const upperId = id.toUpperCase();
-    
-    // Check for person names (typically all caps with spaces)
-    if (upperId.match(/^[A-Z\s]+$/) && !upperId.includes('UNIVERSITY') && 
-        !upperId.includes('INSTITUTE') && !upperId.includes('TECHNOLOGY') &&
-        !upperId.includes('INC') && !upperId.includes('CORP') &&
-        !upperId.includes('LAB') && !upperId.includes('DEPARTMENT')) {
-      return 'person';
-    }
-    
-    // Check for organizations
-    if (upperId.includes('UNIVERSITY') || upperId.includes('INSTITUTE') || 
-        upperId.includes('TECHNOLOGY') || upperId.includes('INC') || 
-        upperId.includes('CORP') || upperId.includes('LAB') ||
-        upperId.includes('DEPARTMENT') || upperId.includes('COMPANY')) {
-      return 'organization';
-    }
-    
-    // Check for technologies/skills
-    if (upperId.includes('PYTHON') || upperId.includes('JAVA') || 
-        upperId.includes('JAVASCRIPT') || upperId.includes('REACT') ||
-        upperId.includes('TENSORFLOW') || upperId.includes('QUANTUM') ||
-        upperId.includes('ALGORITHM') || upperId.includes('SYSTEM') ||
-        upperId.includes('PROTOCOL') || upperId.includes('ENGINE')) {
-      return 'technology';
-    }
-    
-    return 'other';
-  };
 
   // Calculate layout only once when graph data is first loaded
   useEffect(() => {
@@ -275,11 +247,13 @@ const GraphVisualization: React.FC = () => {
     const nodes = applySimpleLayout(graphData.nodes, graphData.edges, width, height);
 
     // Draw ALL edges first (so they appear behind nodes)
+    let renderedEdges = 0;
     graphData.edges.forEach(edge => {
       const sourceNode = nodes.find(n => n.id === edge.source);
       const targetNode = nodes.find(n => n.id === edge.target);
       
       if (sourceNode && targetNode) {
+        renderedEdges++;
         const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
         line.setAttribute('x1', sourceNode.x.toString());
         line.setAttribute('y1', sourceNode.y.toString());
@@ -304,6 +278,8 @@ const GraphVisualization: React.FC = () => {
         graphGroup.appendChild(line);
       }
     });
+    
+    console.log(`Rendered ${renderedEdges} edges out of ${graphData.edges.length} total edges`);
 
     // Draw ALL nodes
     nodes.forEach(node => {

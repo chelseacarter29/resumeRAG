@@ -354,6 +354,89 @@ async def health_check():
         "resumes_loaded": len(resume_data) > 0
     }
 
+@app.get("/graph-data")
+async def get_graph_data():
+    """Get entities and relationships data for visualization"""
+    
+    if entities_df is None or graph is None:
+        raise HTTPException(
+            status_code=500, 
+            detail="Graph data not loaded. Check server logs."
+        )
+    
+    try:
+        # Debug: Print entities info
+        print("Entities columns:", entities_df.columns.tolist())
+        print("Graph nodes:", len(graph.nodes))
+        print("Graph edges:", len(graph.edges))
+        
+        # Create a mapping from entity title to entity data for type lookup
+        entity_map = {}
+        for _, entity in entities_df.iterrows():
+            title = str(entity.get('title', ''))
+            if title:
+                entity_map[title] = {
+                    'id': str(entity.get('id', '')),
+                    'type': str(entity.get('type', 'other')).lower(),
+                    'description': str(entity.get('description', ''))
+                }
+        
+        # Convert graph nodes to our format, using entities for type information
+        nodes = []
+        for node_id in graph.nodes():
+            # Get type from entities data if available
+            entity_info = entity_map.get(node_id, {})
+            entity_type = entity_info.get('type', 'other')
+            if entity_type == '' or entity_type == 'nan':
+                entity_type = 'other'
+            
+            # Use entity description if available
+            description = entity_info.get('description', '')
+            
+            node = {
+                "id": node_id,
+                "label": node_id,  # Use the node ID as label (it's already human readable)
+                "type": entity_type,
+                "description": description
+            }
+            nodes.append(node)
+        
+        # Convert graph edges to our format
+        edges = []
+        for source, target in graph.edges():
+            # Get edge weight if available
+            weight = graph[source][target].get('weight', 0.5)
+            
+            edge = {
+                "source": source,
+                "target": target,
+                "weight": float(weight),
+                "type": ""  # GraphML doesn't have edge types
+            }
+            edges.append(edge)
+        
+        print(f"Created {len(nodes)} nodes and {len(edges)} edges")
+        
+        # Debug: Print type distribution
+        type_counts = {}
+        for node in nodes:
+            node_type = node['type']
+            type_counts[node_type] = type_counts.get(node_type, 0) + 1
+        print("Node type distribution:", type_counts)
+        
+        return {
+            "nodes": nodes,
+            "edges": edges,
+            "total_nodes": len(nodes),
+            "total_edges": len(edges)
+        }
+        
+    except Exception as e:
+        print(f"Graph data error: {e}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Failed to get graph data: {str(e)}")
+
 @app.post("/query", response_model=QueryResponse)
 async def query_resumes(request: QueryRequest):
     """Query the resume database"""
