@@ -32,6 +32,7 @@ const GraphVisualization: React.FC = () => {
   const [initiallyMatchingNodes, setInitiallyMatchingNodes] = useState<Set<string>>(new Set());
   const [isLayoutCalculated, setIsLayoutCalculated] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [depth, setDepth] = useState(1);
 
   useEffect(() => {
     loadGraphData();
@@ -129,6 +130,69 @@ const GraphVisualization: React.FC = () => {
     setGraphData(mockData);
   };
 
+  // Function to find nodes at different depths from search terms
+  const findNodesAtDepth = (searchTerms: string[], maxDepth: number): Set<string> => {
+    const allMatchingNodes = new Set<string>();
+    
+    // Find initially matching nodes for all search terms
+    searchTerms.forEach(term => {
+      const termMatchingNodes = graphData.nodes
+        .filter(node => 
+          node.label.toLowerCase().includes(term.toLowerCase()) ||
+          node.id.toLowerCase().includes(term.toLowerCase())
+        )
+        .map(node => node.id);
+      
+      termMatchingNodes.forEach(nodeId => allMatchingNodes.add(nodeId));
+    });
+
+    if (allMatchingNodes.size === 0) {
+      return new Set();
+    }
+
+    // Build adjacency map for efficient traversal
+    const adjacencyMap = new Map<string, Set<string>>();
+    graphData.edges.forEach(edge => {
+      if (!adjacencyMap.has(edge.source)) {
+        adjacencyMap.set(edge.source, new Set());
+      }
+      if (!adjacencyMap.has(edge.target)) {
+        adjacencyMap.set(edge.target, new Set());
+      }
+      adjacencyMap.get(edge.source)!.add(edge.target);
+      adjacencyMap.get(edge.target)!.add(edge.source);
+    });
+
+    // BFS to find nodes at different depths
+    const visited = new Set<string>();
+    const result = new Set<string>();
+    const queue: { nodeId: string; depth: number }[] = [];
+
+    // Start BFS from all initially matching nodes
+    allMatchingNodes.forEach(nodeId => {
+      queue.push({ nodeId, depth: 0 });
+      visited.add(nodeId);
+      result.add(nodeId);
+    });
+
+    while (queue.length > 0) {
+      const { nodeId, depth: currentDepth } = queue.shift()!;
+      
+      if (currentDepth < maxDepth) {
+        const neighbors = adjacencyMap.get(nodeId) || new Set();
+        neighbors.forEach(neighborId => {
+          if (!visited.has(neighborId)) {
+            visited.add(neighborId);
+            result.add(neighborId);
+            queue.push({ nodeId: neighborId, depth: currentDepth + 1 });
+          }
+        });
+      }
+    }
+
+    return result;
+  };
+
 
   // Calculate layout only once when graph data is first loaded
   useEffect(() => {
@@ -152,7 +216,7 @@ const GraphVisualization: React.FC = () => {
     }
   }, [visibleNodes, isLayoutCalculated]);
 
-  // Handle search text changes
+  // Handle search text and depth changes
   useEffect(() => {
     if (searchText.trim() === '') {
       setVisibleNodes(new Set());
@@ -176,24 +240,11 @@ const GraphVisualization: React.FC = () => {
 
       setInitiallyMatchingNodes(allMatchingNodes);
 
-      // Find adjacent nodes (connected to any of the initially matching nodes)
-      const adjacentNodes = new Set<string>();
-      allMatchingNodes.forEach(nodeId => {
-        graphData.edges.forEach(edge => {
-          if (edge.source === nodeId) {
-            adjacentNodes.add(edge.target);
-          }
-          if (edge.target === nodeId) {
-            adjacentNodes.add(edge.source);
-          }
-        });
-      });
-
-      // Combine initially matching nodes and their adjacent nodes
-      const allVisibleNodes = new Set([...allMatchingNodes, ...adjacentNodes]);
+      // Find nodes at the specified depth from search terms
+      const allVisibleNodes = findNodesAtDepth(searchTerms, depth);
       setVisibleNodes(allVisibleNodes);
     }
-  }, [searchText, graphData.nodes, graphData.edges]);
+  }, [searchText, depth, graphData.nodes, graphData.edges]);
 
   // Apply transform without redrawing the graph
   useEffect(() => {
@@ -492,6 +543,26 @@ const GraphVisualization: React.FC = () => {
               placeholder="Search for nodes (e.g., 'Alex', 'Google, Python', 'University, Tech')..."
               className="search-input"
             />
+            <div className="depth-controls">
+              <label htmlFor="depth-control">Depth:</label>
+              <div className="depth-buttons">
+                <button 
+                  onClick={() => setDepth(Math.max(1, depth - 1))}
+                  disabled={depth <= 1}
+                  className="depth-btn"
+                >
+                  -
+                </button>
+                <span className="depth-value">{depth}</span>
+                <button 
+                  onClick={() => setDepth(Math.min(5, depth + 1))}
+                  disabled={depth >= 5}
+                  className="depth-btn"
+                >
+                  +
+                </button>
+              </div>
+            </div>
             <div className="search-results">
               {searchText.trim() !== '' && (
                 <div className="result-breakdown">
@@ -500,7 +571,7 @@ const GraphVisualization: React.FC = () => {
                   </span>
                   <span className="result-separator">+</span>
                   <span className="result-count">
-                    {visibleNodes.size - initiallyMatchingNodes.size} adjacent node{visibleNodes.size - initiallyMatchingNodes.size !== 1 ? 's' : ''}
+                    {visibleNodes.size - initiallyMatchingNodes.size} node{visibleNodes.size - initiallyMatchingNodes.size !== 1 ? 's' : ''} within {depth} step{depth !== 1 ? 's' : ''}
                   </span>
                   <span className="result-separator">=</span>
                   <span className="result-total">
@@ -551,7 +622,7 @@ const GraphVisualization: React.FC = () => {
           ).length} edges
         </p>
         <p className="instructions">
-          🔍 Type terms separated by commas (e.g., "Alex, Google") | 🖱️ Drag to pan around the graph
+          🔍 Type terms separated by commas (e.g., "Alex, Google") | ➕➖ Adjust depth to expand search | 🖱️ Drag to pan around the graph
         </p>
       </div>
     </div>

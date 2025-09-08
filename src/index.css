@@ -372,6 +372,72 @@ h1 {
   border-color: #0066cc;
 }
 
+.depth-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.depth-controls label {
+  font-weight: 500;
+  color: #666;
+}
+
+.dark-mode .depth-controls label {
+  color: #999;
+}
+
+.depth-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.depth-btn {
+  width: 28px;
+  height: 28px;
+  border: 1px solid #ddd;
+  background: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.depth-btn:hover:not(:disabled) {
+  background: #f8f9fa;
+  border-color: #007bff;
+}
+
+.depth-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.depth-value {
+  min-width: 20px;
+  text-align: center;
+  font-weight: 500;
+  padding: 0 0.5rem;
+}
+
+.dark-mode .depth-btn {
+  background: #333;
+  border-color: #666;
+  color: #e0e0e0;
+}
+
+.dark-mode .depth-btn:hover:not(:disabled) {
+  background: #444;
+  border-color: #0066cc;
+}
+
 .search-results {
   display: flex;
   align-items: center;
