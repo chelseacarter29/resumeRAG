@@ -1,0 +1,682 @@
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+  <key id="d0" for="edge" attr.name="weight" attr.type="double" />
+  <graph edgedefault="undirected">
+    <node id="ALEX CHEN" />
+    <node id="UNIVERSITY OF CALIFORNIA, BERKELEY" />
+    <node id="TECHSTART INC." />
+    <node id="UC BERKELEY CS DEPARTMENT" />
+    <node id="SARAH JOHNSON" />
+    <node id="MASSACHUSETTS INSTITUTE OF TECHNOLOGY" />
+    <node id="META" />
+    <node id="MIT AI LAB" />
+    <node id="MICHAEL RODRIGUEZ" />
+    <node id="STANFORD UNIVERSITY" />
+    <node id="STRIPE" />
+    <node id="EMILY WANG" />
+    <node id="GOOGLE" />
+    <node id="NETFLIX" />
+    <node id="CMU MACHINE LEARNING DEPARTMENT" />
+    <node id="DAVID KIM" />
+    <node id="APPLE" />
+    <node id="AUTOMATED TRADING BOT" />
+    <node id="TECHNICAL INDICATORS" />
+    <node id="MARKET DATA" />
+    <node id="URL SHORTENER SERVICE" />
+    <node id="URL SHORTENING" />
+    <node id="RESPONSE TIME" />
+    <node id="QUINTARA" />
+    <node id="FIRUZABAD" />
+    <node id="TIRUZIA" />
+    <node id="AURELIA" />
+    <node id="ALHAMIA PRISON" />
+    <node id="SAMUEL NAMARA" />
+    <node id="BRATINAS" />
+    <node id="MEGGIE TAZBAH" />
+    <node id="MICROSERVICES ARCHITECTURE" />
+    <node id="MESSAGE DELIVERY LATENCY" />
+    <node id="UBER" />
+    <node id="MARTIN SMITH" />
+    <node id="JESSICA THOMPSON" />
+    <node id="UNIVERSITY OF CALIFORNIA, LOS ANGELES" />
+    <node id="ADOBE" />
+    <node id="AIRBNB" />
+    <node id="RYAN PARK" />
+    <node id="GEORGIA INSTITUTE OF TECHNOLOGY" />
+    <node id="AMANDA LEE" />
+    <node id="UNIVERSITY OF SOUTHERN CALIFORNIA" />
+    <node id="UNITY" />
+    <node id="3D ACTION RPG GAME" />
+    <node id="VR PUZZLE GAME" />
+    <node id="UNREAL ENGINE" />
+    <node id="MULTIPLAYER RACING GAME" />
+    <node id="ELECTRONIC ARTS" />
+    <node id="KEVIN ZHANG" />
+    <node id="LOCKHEED MARTIN" />
+    <node id="LISA MILLER" />
+    <node id="CROWDSTRIKE" />
+    <node id="UNIVERSITY OF MARYLAND" />
+    <node id="NETWORK SECURITY SCANNER" />
+    <node id="PYTHON" />
+    <node id="WIRESHARK" />
+    <node id="NMAP" />
+    <node id="METASPLOIT" />
+    <node id="WEB APPLICATION SECURITY TESTER" />
+    <node id="BURP SUITE" />
+    <node id="OWASP ZAP" />
+    <node id="ENCRYPTED FILE STORAGE SYSTEM" />
+    <node id="JAVA" />
+    <node id="UNIVERSITY OF MICHIGAN" />
+    <node id="TESLA" />
+    <node id="LINCOLN MARTIN" />
+    <node id="PURDUE UNIVERSITY" />
+    <node id="TEXAS INSTRUMENTS" />
+    <node id="INTEL" />
+    <node id="ASHLEY GARCIA" />
+    <node id="UNIVERSITY OF ILLINOIS AT URBANA-CHAMPAIGN" />
+    <node id="MONGODB" />
+    <node id="SNOWFLAKE" />
+    <node id="TYLER JOHNSON" />
+    <node id="CALIFORNIA INSTITUTE OF TECHNOLOGY" />
+    <node id="IBM QUANTUM" />
+    <node id="GOOGLE QUANTUM AI" />
+    <node id="MICROSOFT AZURE QUANTUM" />
+    <node id="NUMPY" />
+    <node id="SCIPY" />
+    <node id="JUPYTER" />
+    <node id="TENSORFLOW QUANTUM" />
+    <node id="QUANTUM CRYPTOGRAPHY PROTOCOL" />
+    <node id="MICROSOFT" />
+    <node id="QUANTUM DEVELOPMENT KIT" />
+    <node id="BB84 PROTOCOL" />
+    <node id="QUANTUM ALGORITHM SIMULATOR" />
+    <node id="SHOR'S ALGORITHM" />
+    <node id="CIRQ" />
+    <node id="QUANTUM RESEARCH INTERN" />
+    <node id="QISKIT" />
+    <node id="QUANTUM COMPUTING INTERN" />
+    <node id="NICOLE TAYLOR" />
+    <node id="UNIVERSITY OF CALIFORNIA, SAN DIEGO" />
+    <node id="JORDAN MARTINEZ" />
+    <node id="UNIVERSITY OF NORTH CAROLINA AT CHAPEL HILL" />
+    <node id="SAMANTHA LEE" />
+    <node id="PENNSYLVANIA STATE UNIVERSITY" />
+    <node id="QUANTUM HARDWARE TEAM" />
+    <node id="NOISE CHARACTERIZATION" />
+    <node id="QUANTUM SUPREMACY EXPERIMENTS" />
+    <node id="OPTIMIZATION PROBLEMS" />
+    <node id="QUANTUM HARDWARE CALIBRATION" />
+    <node id="OBJECT RECOGNITION" />
+    <node id="AR DEVELOPER INTERN" />
+    <node id="USER EXPERIENCE RESEARCH" />
+    <node id="VIRTUAL ENVIRONMENTS" />
+    <node id="VR RESEARCH INTERN" />
+    <node id="HAPTIC FEEDBACK" />
+    <node id="SPATIAL AUDIO SYSTEMS" />
+    <node id="HARVARD UNIVERSITY" />
+    <node id="ANDREW CHEN" />
+    <node id="MEGAN DAVIS" />
+    <node id="ROBOTICS ENGINEER" />
+    <node id="IBM" />
+    <node id="SYSTEMS ADMINISTRATOR" />
+    <node id="RED HAT" />
+    <node id="AI ETHICS RESEARCHER" />
+    <node id="PARTNERSHIP ON AI" />
+    <node id="FUTURE OF HUMANITY INSTITUTE" />
+    <node id="AUTONOMOUS DELIVERY ROBOT" />
+    <node id="ROS2" />
+    <node id="OPENCV" />
+    <node id="LIDAR" />
+    <node id="RASPBERRY PI" />
+    <node id="GPS" />
+    <node id="TECHGLOBAL" />
+    <node id="VISION HOLDINGS" />
+    <node id="ROBOTICS ENGINEERING INTERN" />
+    <node id="BOSTON DYNAMICS" />
+    <node id="RESEARCH INTERN" />
+    <node id="MIT CSAIL" />
+    <node id="FINTECH DEVELOPER" />
+    <node id="ROBINHOOD" />
+    <node id="GOLDMAN SACHS" />
+    <node id="EPIC SYSTEMS" />
+    <node id="HEALTH TECH INTERN" />
+    <node id="MODERNA" />
+    <node id="DIGITAL HEALTH INTERN" />
+    <node id="C++" />
+    <node id="ROBOTIC ARM MANIPULATION" />
+    <node id="GAZEBO" />
+    <node id="INTEL REALSENSE CAMERA" />
+    <node id="MOVEIT" />
+    <node id="SWARM ROBOTICS SIMULATION" />
+    <node id="MATPLOTLIB" />
+    <node id="MARCUS THOMPSON" />
+    <node id="KHAN ACADEMY" />
+    <node id="OLIVIA CHANG" />
+    <node id="COURSERA" />
+    <node id="UNIVERSITY OF CALIFORNIA, SAN FRANCISCO" />
+    <node id="GENENTECH" />
+    <node id="BROAD INSTITUTE" />
+    <node id="ETHAN PARK" />
+    <node id="ASSEMBLY" />
+    <node id="AUTOSAR" />
+    <node id="ISO 26262" />
+    <node id="CAN" />
+    <node id="LIN" />
+    <node id="FLEXRAY" />
+    <node id="ARM CORTEX" />
+    <node id="MICROCHIP PIC" />
+    <node id="TEXAS INSTRUMENTS DSP" />
+    <node id="CANOE" />
+    <node id="VECTOR TOOLS" />
+    <node id="MATLAB/SIMULINK" />
+    <node id="GIT" />
+    <node id="JIRA" />
+    <node id="REAL-TIME SYSTEMS" />
+    <node id="SIGNAL PROCESSING" />
+    <node id="CONTROL THEORY" />
+    <node id="ADVANCED DRIVER ASSISTANCE SYSTEM" />
+    <node id="ELECTRIC VEHICLE BATTERY MANAGEMENT" />
+    <node id="AUTONOMOUS PARKING SYSTEM" />
+    <node id="AUTOMOTIVE SOFTWARE INTERN" />
+    <node id="EMBEDDED SYSTEMS INTERN" />
+    <node id="CAN PROTOCOL" />
+    <node id="ARM CORTEX-M7" />
+    <node id="MATLAB" />
+    <node id="C" />
+    <node id="FREE RTOS" />
+    <node id="STM32" />
+    <node id="ROS" />
+    <node id="ULTRASONIC SENSORS" />
+    <node id="FORD MOTOR COMPANY" />
+    <node id="OVER-THE-AIR UPDATE MECHANISMS" />
+    <node id="VEHICLE TESTING AND VALIDATION PROCEDURES" />
+    <node id="BOSCH" />
+    <node id="ADAS SENSOR FUSION ALGORITHMS" />
+    <node id="ISO 26262 FUNCTIONAL SAFETY COMPLIANCE TESTING" />
+    <edge source="ALEX CHEN" target="UNIVERSITY OF CALIFORNIA, BERKELEY">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="ALEX CHEN" target="TECHSTART INC.">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="ALEX CHEN" target="UC BERKELEY CS DEPARTMENT">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="UNIVERSITY OF CALIFORNIA, BERKELEY" target="MARCUS THOMPSON">
+      <data key="d0">18.0</data>
+    </edge>
+    <edge source="SARAH JOHNSON" target="MASSACHUSETTS INSTITUTE OF TECHNOLOGY">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="SARAH JOHNSON" target="META">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="SARAH JOHNSON" target="MIT AI LAB">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="MASSACHUSETTS INSTITUTE OF TECHNOLOGY" target="MEGAN DAVIS">
+      <data key="d0">1.0</data>
+    </edge>
+    <edge source="MASSACHUSETTS INSTITUTE OF TECHNOLOGY" target="ROBOTICS ENGINEER">
+      <data key="d0">1.0</data>
+    </edge>
+    <edge source="MICHAEL RODRIGUEZ" target="STANFORD UNIVERSITY">
+      <data key="d0">1.0</data>
+    </edge>
+    <edge source="STRIPE" target="EMILY WANG">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="EMILY WANG" target="GOOGLE">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="EMILY WANG" target="NETFLIX">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="EMILY WANG" target="CMU MACHINE LEARNING DEPARTMENT">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="DAVID KIM" target="APPLE">
+      <data key="d0">1.0</data>
+    </edge>
+    <edge source="APPLE" target="JESSICA THOMPSON">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="AUTOMATED TRADING BOT" target="TECHNICAL INDICATORS">
+      <data key="d0">6.0</data>
+    </edge>
+    <edge source="AUTOMATED TRADING BOT" target="MARKET DATA">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="URL SHORTENER SERVICE" target="URL SHORTENING">
+      <data key="d0">6.0</data>
+    </edge>
+    <edge source="URL SHORTENER SERVICE" target="RESPONSE TIME">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="QUINTARA" target="FIRUZABAD">
+      <data key="d0">5.0</data>
+    </edge>
+    <edge source="TIRUZIA" target="AURELIA">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="ALHAMIA PRISON" target="SAMUEL NAMARA">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="BRATINAS" target="MEGGIE TAZBAH">
+      <data key="d0">1.0</data>
+    </edge>
+    <edge source="MICROSERVICES ARCHITECTURE" target="MESSAGE DELIVERY LATENCY">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="UBER" target="MARTIN SMITH">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="JESSICA THOMPSON" target="UNIVERSITY OF CALIFORNIA, LOS ANGELES">
+      <data key="d0">9.0</data>
+    </edge>
+    <edge source="JESSICA THOMPSON" target="ADOBE">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="ADOBE" target="SAMANTHA LEE">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="AIRBNB" target="RYAN PARK">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="RYAN PARK" target="GEORGIA INSTITUTE OF TECHNOLOGY">
+      <data key="d0">9.0</data>
+    </edge>
+    <edge source="AMANDA LEE" target="UNIVERSITY OF SOUTHERN CALIFORNIA">
+      <data key="d0">1.0</data>
+    </edge>
+    <edge source="UNITY" target="3D ACTION RPG GAME">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="UNITY" target="VR PUZZLE GAME">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="UNREAL ENGINE" target="MULTIPLAYER RACING GAME">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="ELECTRONIC ARTS" target="KEVIN ZHANG">
+      <data key="d0">9.0</data>
+    </edge>
+    <edge source="KEVIN ZHANG" target="LOCKHEED MARTIN">
+      <data key="d0">9.0</data>
+    </edge>
+    <edge source="KEVIN ZHANG" target="CROWDSTRIKE">
+      <data key="d0">9.0</data>
+    </edge>
+    <edge source="KEVIN ZHANG" target="UNIVERSITY OF MARYLAND">
+      <data key="d0">9.0</data>
+    </edge>
+    <edge source="LOCKHEED MARTIN" target="LISA MILLER">
+      <data key="d0">9.0</data>
+    </edge>
+    <edge source="LISA MILLER" target="CROWDSTRIKE">
+      <data key="d0">2.0</data>
+    </edge>
+    <edge source="LISA MILLER" target="UNIVERSITY OF MICHIGAN">
+      <data key="d0">9.0</data>
+    </edge>
+    <edge source="LISA MILLER" target="TESLA">
+      <data key="d0">9.0</data>
+    </edge>
+    <edge source="LISA MILLER" target="LINCOLN MARTIN">
+      <data key="d0">9.0</data>
+    </edge>
+    <edge source="NETWORK SECURITY SCANNER" target="PYTHON">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="NETWORK SECURITY SCANNER" target="WIRESHARK">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="NETWORK SECURITY SCANNER" target="NMAP">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="NETWORK SECURITY SCANNER" target="METASPLOIT">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="PYTHON" target="WEB APPLICATION SECURITY TESTER">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="PYTHON" target="AUTONOMOUS DELIVERY ROBOT">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="WEB APPLICATION SECURITY TESTER" target="BURP SUITE">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="WEB APPLICATION SECURITY TESTER" target="OWASP ZAP">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="ENCRYPTED FILE STORAGE SYSTEM" target="JAVA">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="UNIVERSITY OF MICHIGAN" target="ETHAN PARK">
+      <data key="d0">2.0</data>
+    </edge>
+    <edge source="PURDUE UNIVERSITY" target="TEXAS INSTRUMENTS">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="PURDUE UNIVERSITY" target="INTEL">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="ASHLEY GARCIA" target="UNIVERSITY OF ILLINOIS AT URBANA-CHAMPAIGN">
+      <data key="d0">9.0</data>
+    </edge>
+    <edge source="ASHLEY GARCIA" target="MONGODB">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="ASHLEY GARCIA" target="SNOWFLAKE">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="TYLER JOHNSON" target="CALIFORNIA INSTITUTE OF TECHNOLOGY">
+      <data key="d0">1.0</data>
+    </edge>
+    <edge source="TYLER JOHNSON" target="IBM QUANTUM">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="TYLER JOHNSON" target="GOOGLE QUANTUM AI">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="TYLER JOHNSON" target="MICROSOFT AZURE QUANTUM">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="TYLER JOHNSON" target="NUMPY">
+      <data key="d0">6.0</data>
+    </edge>
+    <edge source="TYLER JOHNSON" target="SCIPY">
+      <data key="d0">6.0</data>
+    </edge>
+    <edge source="TYLER JOHNSON" target="JUPYTER">
+      <data key="d0">6.0</data>
+    </edge>
+    <edge source="TYLER JOHNSON" target="TENSORFLOW QUANTUM">
+      <data key="d0">1.0</data>
+    </edge>
+    <edge source="IBM QUANTUM" target="QUANTUM RESEARCH INTERN">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="GOOGLE QUANTUM AI" target="QUANTUM COMPUTING INTERN">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="NUMPY" target="SWARM ROBOTICS SIMULATION">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="TENSORFLOW QUANTUM" target="QUANTUM ALGORITHM SIMULATOR">
+      <data key="d0">6.0</data>
+    </edge>
+    <edge source="QUANTUM CRYPTOGRAPHY PROTOCOL" target="MICROSOFT">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="QUANTUM CRYPTOGRAPHY PROTOCOL" target="QUANTUM DEVELOPMENT KIT">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="QUANTUM CRYPTOGRAPHY PROTOCOL" target="BB84 PROTOCOL">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="QUANTUM ALGORITHM SIMULATOR" target="SHOR'S ALGORITHM">
+      <data key="d0">9.0</data>
+    </edge>
+    <edge source="QUANTUM ALGORITHM SIMULATOR" target="CIRQ">
+      <data key="d0">6.0</data>
+    </edge>
+    <edge source="QUANTUM RESEARCH INTERN" target="QISKIT">
+      <data key="d0">6.0</data>
+    </edge>
+    <edge source="QUANTUM RESEARCH INTERN" target="QUANTUM HARDWARE TEAM">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="QUANTUM RESEARCH INTERN" target="NOISE CHARACTERIZATION">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="QUANTUM COMPUTING INTERN" target="QUANTUM SUPREMACY EXPERIMENTS">
+      <data key="d0">9.0</data>
+    </edge>
+    <edge source="QUANTUM COMPUTING INTERN" target="OPTIMIZATION PROBLEMS">
+      <data key="d0">9.0</data>
+    </edge>
+    <edge source="QUANTUM COMPUTING INTERN" target="QUANTUM HARDWARE CALIBRATION">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="NICOLE TAYLOR" target="UNIVERSITY OF CALIFORNIA, SAN DIEGO">
+      <data key="d0">9.0</data>
+    </edge>
+    <edge source="JORDAN MARTINEZ" target="UNIVERSITY OF NORTH CAROLINA AT CHAPEL HILL">
+      <data key="d0">9.0</data>
+    </edge>
+    <edge source="SAMANTHA LEE" target="PENNSYLVANIA STATE UNIVERSITY">
+      <data key="d0">5.0</data>
+    </edge>
+    <edge source="OBJECT RECOGNITION" target="AR DEVELOPER INTERN">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="AR DEVELOPER INTERN" target="USER EXPERIENCE RESEARCH">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="VIRTUAL ENVIRONMENTS" target="VR RESEARCH INTERN">
+      <data key="d0">9.0</data>
+    </edge>
+    <edge source="VR RESEARCH INTERN" target="HAPTIC FEEDBACK">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="VR RESEARCH INTERN" target="SPATIAL AUDIO SYSTEMS">
+      <data key="d0">1.0</data>
+    </edge>
+    <edge source="HARVARD UNIVERSITY" target="ANDREW CHEN">
+      <data key="d0">5.0</data>
+    </edge>
+    <edge source="IBM" target="SYSTEMS ADMINISTRATOR">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="SYSTEMS ADMINISTRATOR" target="RED HAT">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="AI ETHICS RESEARCHER" target="PARTNERSHIP ON AI">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="AI ETHICS RESEARCHER" target="FUTURE OF HUMANITY INSTITUTE">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="AUTONOMOUS DELIVERY ROBOT" target="ROS2">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="AUTONOMOUS DELIVERY ROBOT" target="OPENCV">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="AUTONOMOUS DELIVERY ROBOT" target="LIDAR">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="AUTONOMOUS DELIVERY ROBOT" target="RASPBERRY PI">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="AUTONOMOUS DELIVERY ROBOT" target="GPS">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="OPENCV" target="ADVANCED DRIVER ASSISTANCE SYSTEM">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="LIDAR" target="AUTONOMOUS PARKING SYSTEM">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="RASPBERRY PI" target="AUTONOMOUS PARKING SYSTEM">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="TECHGLOBAL" target="VISION HOLDINGS">
+      <data key="d0">5.0</data>
+    </edge>
+    <edge source="ROBOTICS ENGINEERING INTERN" target="BOSTON DYNAMICS">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="RESEARCH INTERN" target="MIT CSAIL">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="FINTECH DEVELOPER" target="ROBINHOOD">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="FINTECH DEVELOPER" target="GOLDMAN SACHS">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="EPIC SYSTEMS" target="HEALTH TECH INTERN">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="EPIC SYSTEMS" target="MARCUS THOMPSON">
+      <data key="d0">14.0</data>
+    </edge>
+    <edge source="MODERNA" target="DIGITAL HEALTH INTERN">
+      <data key="d0">1.0</data>
+    </edge>
+    <edge source="MODERNA" target="MARCUS THOMPSON">
+      <data key="d0">14.0</data>
+    </edge>
+    <edge source="C++" target="ROBOTIC ARM MANIPULATION">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="C++" target="ADVANCED DRIVER ASSISTANCE SYSTEM">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="C++" target="AUTONOMOUS PARKING SYSTEM">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="C++" target="AUTOMOTIVE SOFTWARE INTERN">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="ROBOTIC ARM MANIPULATION" target="GAZEBO">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="ROBOTIC ARM MANIPULATION" target="INTEL REALSENSE CAMERA">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="ROBOTIC ARM MANIPULATION" target="MOVEIT">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="SWARM ROBOTICS SIMULATION" target="MATPLOTLIB">
+      <data key="d0">1.0</data>
+    </edge>
+    <edge source="KHAN ACADEMY" target="OLIVIA CHANG">
+      <data key="d0">14.0</data>
+    </edge>
+    <edge source="OLIVIA CHANG" target="COURSERA">
+      <data key="d0">14.0</data>
+    </edge>
+    <edge source="OLIVIA CHANG" target="UNIVERSITY OF CALIFORNIA, SAN FRANCISCO">
+      <data key="d0">18.0</data>
+    </edge>
+    <edge source="OLIVIA CHANG" target="GENENTECH">
+      <data key="d0">14.0</data>
+    </edge>
+    <edge source="OLIVIA CHANG" target="BROAD INSTITUTE">
+      <data key="d0">14.0</data>
+    </edge>
+    <edge source="ASSEMBLY" target="AUTOSAR">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="ASSEMBLY" target="ISO 26262">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="ASSEMBLY" target="CAN">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="ASSEMBLY" target="LIN">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="ASSEMBLY" target="FLEXRAY">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="ASSEMBLY" target="ARM CORTEX">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="ASSEMBLY" target="MICROCHIP PIC">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="ASSEMBLY" target="TEXAS INSTRUMENTS DSP">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="ASSEMBLY" target="CANOE">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="ASSEMBLY" target="VECTOR TOOLS">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="ASSEMBLY" target="MATLAB/SIMULINK">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="ASSEMBLY" target="GIT">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="ASSEMBLY" target="JIRA">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="ASSEMBLY" target="REAL-TIME SYSTEMS">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="ASSEMBLY" target="SIGNAL PROCESSING">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="ASSEMBLY" target="CONTROL THEORY">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="ASSEMBLY" target="ADVANCED DRIVER ASSISTANCE SYSTEM">
+      <data key="d0">9.0</data>
+    </edge>
+    <edge source="ASSEMBLY" target="ELECTRIC VEHICLE BATTERY MANAGEMENT">
+      <data key="d0">9.0</data>
+    </edge>
+    <edge source="ASSEMBLY" target="AUTONOMOUS PARKING SYSTEM">
+      <data key="d0">9.0</data>
+    </edge>
+    <edge source="ASSEMBLY" target="AUTOMOTIVE SOFTWARE INTERN">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="ASSEMBLY" target="EMBEDDED SYSTEMS INTERN">
+      <data key="d0">7.0</data>
+    </edge>
+    <edge source="CAN" target="ELECTRIC VEHICLE BATTERY MANAGEMENT">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="MATLAB/SIMULINK" target="ELECTRIC VEHICLE BATTERY MANAGEMENT">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="ADVANCED DRIVER ASSISTANCE SYSTEM" target="CAN PROTOCOL">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="ADVANCED DRIVER ASSISTANCE SYSTEM" target="ARM CORTEX-M7">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="ADVANCED DRIVER ASSISTANCE SYSTEM" target="MATLAB">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="ELECTRIC VEHICLE BATTERY MANAGEMENT" target="C">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="ELECTRIC VEHICLE BATTERY MANAGEMENT" target="FREE RTOS">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="ELECTRIC VEHICLE BATTERY MANAGEMENT" target="STM32">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="AUTONOMOUS PARKING SYSTEM" target="ROS">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="AUTONOMOUS PARKING SYSTEM" target="ULTRASONIC SENSORS">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="AUTOMOTIVE SOFTWARE INTERN" target="FORD MOTOR COMPANY">
+      <data key="d0">9.0</data>
+    </edge>
+    <edge source="AUTOMOTIVE SOFTWARE INTERN" target="OVER-THE-AIR UPDATE MECHANISMS">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="AUTOMOTIVE SOFTWARE INTERN" target="VEHICLE TESTING AND VALIDATION PROCEDURES">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="EMBEDDED SYSTEMS INTERN" target="BOSCH">
+      <data key="d0">1.0</data>
+    </edge>
+    <edge source="EMBEDDED SYSTEMS INTERN" target="ADAS SENSOR FUSION ALGORITHMS">
+      <data key="d0">8.0</data>
+    </edge>
+    <edge source="EMBEDDED SYSTEMS INTERN" target="ISO 26262 FUNCTIONAL SAFETY COMPLIANCE TESTING">
+      <data key="d0">1.0</data>
+    </edge>
+  </graph>
+</graphml>
