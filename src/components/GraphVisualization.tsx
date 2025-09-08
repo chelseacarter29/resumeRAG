@@ -29,9 +29,26 @@ const GraphVisualization: React.FC = () => {
   const [visibleNodes, setVisibleNodes] = useState<Set<string>>(new Set());
   const [initiallyMatchingNodes, setInitiallyMatchingNodes] = useState<Set<string>>(new Set());
   const [isLayoutCalculated, setIsLayoutCalculated] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
     loadGraphData();
+  }, []);
+
+  // Detect dark mode changes
+  useEffect(() => {
+    const checkDarkMode = () => {
+      setIsDarkMode(document.body.classList.contains('dark-mode'));
+    };
+
+    // Check initial state
+    checkDarkMode();
+
+    // Watch for changes
+    const observer = new MutationObserver(checkDarkMode);
+    observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
+    return () => observer.disconnect();
   }, []);
 
   const loadGraphData = async () => {
@@ -148,6 +165,13 @@ const GraphVisualization: React.FC = () => {
       setIsLayoutCalculated(true);
     }
   }, [graphData, isLayoutCalculated]);
+
+  // Update colors when dark mode changes (without reshuffling)
+  useEffect(() => {
+    if (isLayoutCalculated && svgRef.current) {
+      updateThemeColors();
+    }
+  }, [isDarkMode, isLayoutCalculated]);
 
   // Update visibility without recalculating layout
   useEffect(() => {
@@ -301,7 +325,7 @@ const GraphVisualization: React.FC = () => {
       else if (node.type === 'technology') color = '#9C27B0';
       
       circle.setAttribute('fill', color);
-      circle.setAttribute('stroke', '#fff');
+      circle.setAttribute('stroke', isDarkMode ? '#000' : '#fff');
       circle.setAttribute('stroke-width', '2');
       circle.setAttribute('class', 'graph-node');
       circle.setAttribute('data-node-id', node.id);
@@ -314,7 +338,7 @@ const GraphVisualization: React.FC = () => {
       text.setAttribute('y', (node.y + radius + 15).toString());
       text.setAttribute('text-anchor', 'middle');
       text.setAttribute('font-size', node.type === 'person' ? '10' : '9');
-      text.setAttribute('fill', '#333');
+      text.setAttribute('fill', isDarkMode ? '#fff' : '#333');
       text.setAttribute('font-weight', node.type === 'person' ? 'bold' : 'normal');
       text.setAttribute('class', 'graph-label');
       text.setAttribute('data-node-id', node.id);
@@ -368,6 +392,23 @@ const GraphVisualization: React.FC = () => {
           edge.setAttribute('opacity', '0');
         }
       }
+    });
+  };
+
+  const updateThemeColors = () => {
+    const svg = svgRef.current;
+    if (!svg) return;
+
+    // Update node stroke colors
+    const nodes = svg.querySelectorAll('.graph-node');
+    nodes.forEach(node => {
+      node.setAttribute('stroke', isDarkMode ? '#000' : '#fff');
+    });
+
+    // Update text colors
+    const labels = svg.querySelectorAll('.graph-label');
+    labels.forEach(label => {
+      label.setAttribute('fill', isDarkMode ? '#fff' : '#333');
     });
   };
 
