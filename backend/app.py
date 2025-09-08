@@ -397,9 +397,92 @@ async def health_check():
         "resumes_loaded": len(resume_data) > 0
     }
 
-@app.post("/query", response_model=QueryResponse)
+@app.get("/graph-data")
+async def get_graph_data():
+    """Get entities and relationships data for visualization"""
+    
+    if entities_df is None or graph is None:
+        raise HTTPException(
+            status_code=500, 
+            detail="Graph data not loaded. Check server logs."
+        )
+    
+    try:
+        # Debug: Print entities info
+        print("Entities columns:", entities_df.columns.tolist())
+        print("Graph nodes:", len(graph.nodes))
+        print("Graph edges:", len(graph.edges))
+        
+        # Create a mapping from entity title to entity data for type lookup
+        entity_map = {}
+        for _, entity in entities_df.iterrows():
+            title = str(entity.get('title', ''))
+            if title:
+                entity_map[title] = {
+                    'id': str(entity.get('id', '')),
+                    'type': str(entity.get('type', 'other')).lower(),
+                    'description': str(entity.get('description', ''))
+                }
+        
+        # Convert graph nodes to our format, using entities for type information
+        nodes = []
+        for node_id in graph.nodes():
+            # Get type from entities data if available
+            entity_info = entity_map.get(node_id, {})
+            entity_type = entity_info.get('type', 'other')
+            if entity_type == '' or entity_type == 'nan':
+                entity_type = 'other'
+            
+            # Use entity description if available
+            description = entity_info.get('description', '')
+            
+            node = {
+                "id": node_id,
+                "label": node_id,  # Use the node ID as label (it's already human readable)
+                "type": entity_type,
+                "description": description
+            }
+            nodes.append(node)
+        
+        # Convert graph edges to our format
+        edges = []
+        for source, target in graph.edges():
+            # Get edge weight if available
+            weight = graph[source][target].get('weight', 0.5)
+            
+            edge = {
+                "source": source,
+                "target": target,
+                "weight": float(weight),
+                "type": ""  # GraphML doesn't have edge types
+            }
+            edges.append(edge)
+        
+        print(f"Created {len(nodes)} nodes and {len(edges)} edges")
+        
+        # Debug: Print type distribution
+        type_counts = {}
+        for node in nodes:
+            node_type = node['type']
+            type_counts[node_type] = type_counts.get(node_type, 0) + 1
+        print("Node type distribution:", type_counts)
+        
+        return {
+            "nodes": nodes,
+            "edges": edges,
+            "total_nodes": len(nodes),
+            "total_edges": len(edges)
+        }
+        
+    except Exception as e:
+        print(f"Graph data error: {e}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Failed to get graph data: {str(e)}")
+
+@app.post("/query")
 async def query_resumes(request: QueryRequest):
-    """Query the resume database"""
+    """Query the resume database - returns new JSON array format"""
     
     if entities_df is None:
         raise HTTPException(
@@ -410,26 +493,75 @@ async def query_resumes(request: QueryRequest):
     try:
         print(f"Processing query: {request.q}")
         
-        # Search entities and communities
-        entity_results = search_entities(request.q, top_k=20)
-        community_results = search_communities(request.q, top_k=10)
+        # Use GraphRAG CLI to get candidates in JSON format
+        raw_response = query_graphrag(request.q, "global")
+        clean_response = parse_graphrag_response(raw_response)
         
-        print(f"Found {len(entity_results)} entity results, {len(community_results)} community results")
+        print(f"GraphRAG response: {clean_response[:200]}...")
         
-        # Generate answer
-        #answer = generate_answer(request.q, entity_results, community_results)
-        answer = parse_graphrag_response(query_graphrag(request.q, "global"))
+        # Try to parse as JSON array first
+        try:
+            import json
+            # Look for JSON array in the response - use greedy matching and better boundaries
+            # First try to find JSON within code blocks
+            code_block_match = re.search(r'```json\s*(\[.*?\])\s*```', clean_response, re.DOTALL)
+            if code_block_match:
+                json_str = code_block_match.group(1).strip()
+            else:
+                # Fallback: look for JSON array with proper bracket matching
+                json_match = re.search(r'\[.*\]', clean_response, re.DOTALL)
+                if json_match:
+                    json_str = json_match.group(0)
+                else:
+                    raise ValueError("No JSON array found in response")
+            
+            # Clean up the JSON string
+            json_str = json_str.strip()
+            candidates_json = json.loads(json_str)
+            print(f"Successfully parsed {len(candidates_json)} candidates from JSON")
+            return candidates_json[:request.top_k]
+        except Exception as json_error:
+            print(f"JSON parsing failed: {json_error}")
+            print(f"Raw response for debugging: {clean_response}")
         
-        # Extract candidates
-        candidates = extract_person_candidates(request.q, entity_results, request.top_k)
+        # Fallback: Extract candidates from text and format as JSON
+        candidates = []
+        lines = clean_response.split('\n')
+        current_candidate = {}
         
-        print(f"Generated answer and {len(candidates)} candidates")
+        for line in lines:
+            line = line.strip()
+            if not line:
+                continue
+                
+            # Look for candidate names (often start with numbers or bullet points)
+            name_match = re.match(r'^[\d\.\-\*\•]\s*(.+?)(?:\s*[-:]|$)', line)
+            if name_match:
+                if current_candidate:
+                    candidates.append(current_candidate)
+                current_candidate = {
+                    "candidate name": name_match.group(1).strip(),
+                    "explanation": ""
+                }
+            elif current_candidate and line:
+                # Add to explanation
+                if current_candidate["explanation"]:
+                    current_candidate["explanation"] += " "
+                current_candidate["explanation"] += line
         
-        return QueryResponse(
-            answer=answer,
-            candidates=candidates,
-            evidence=[]
-        )
+        # Add the last candidate
+        if current_candidate:
+            candidates.append(current_candidate)
+        
+        # If no candidates found, return the raw response
+        if not candidates:
+            candidates = [{
+                "candidate name": "Analysis Result",
+                "explanation": clean_response if clean_response else "No specific candidates found for your query."
+            }]
+        
+        print(f"Returning {len(candidates)} candidates")
+        return candidates[:request.top_k]
         
     except Exception as e:
         print(f"Query error: {e}")
