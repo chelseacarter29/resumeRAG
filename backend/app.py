@@ -419,15 +419,27 @@ async def query_resumes(request: QueryRequest):
         # Try to parse as JSON array first
         try:
             import json
-            # Look for JSON array in the response
-            json_match = re.search(r'\[.*?\]', clean_response, re.DOTALL)
-            if json_match:
-                json_str = json_match.group(0)
-                candidates_json = json.loads(json_str)
-                print(f"Successfully parsed {len(candidates_json)} candidates from JSON")
-                return candidates_json[:request.top_k]
+            # Look for JSON array in the response - use greedy matching and better boundaries
+            # First try to find JSON within code blocks
+            code_block_match = re.search(r'```json\s*(\[.*?\])\s*```', clean_response, re.DOTALL)
+            if code_block_match:
+                json_str = code_block_match.group(1).strip()
+            else:
+                # Fallback: look for JSON array with proper bracket matching
+                json_match = re.search(r'\[.*\]', clean_response, re.DOTALL)
+                if json_match:
+                    json_str = json_match.group(0)
+                else:
+                    raise ValueError("No JSON array found in response")
+            
+            # Clean up the JSON string
+            json_str = json_str.strip()
+            candidates_json = json.loads(json_str)
+            print(f"Successfully parsed {len(candidates_json)} candidates from JSON")
+            return candidates_json[:request.top_k]
         except Exception as json_error:
             print(f"JSON parsing failed: {json_error}")
+            print(f"Raw response for debugging: {clean_response}")
         
         # Fallback: Extract candidates from text and format as JSON
         candidates = []
