@@ -397,9 +397,9 @@ async def health_check():
         "resumes_loaded": len(resume_data) > 0
     }
 
-@app.post("/query", response_model=QueryResponse)
+@app.post("/query")
 async def query_resumes(request: QueryRequest):
-    """Query the resume database"""
+    """Query the resume database - returns new JSON array format"""
     
     if entities_df is None:
         raise HTTPException(
@@ -410,26 +410,63 @@ async def query_resumes(request: QueryRequest):
     try:
         print(f"Processing query: {request.q}")
         
-        # Search entities and communities
-        entity_results = search_entities(request.q, top_k=20)
-        community_results = search_communities(request.q, top_k=10)
+        # Use GraphRAG CLI to get candidates in JSON format
+        raw_response = query_graphrag(request.q, "global")
+        clean_response = parse_graphrag_response(raw_response)
         
-        print(f"Found {len(entity_results)} entity results, {len(community_results)} community results")
+        print(f"GraphRAG response: {clean_response[:200]}...")
         
-        # Generate answer
-        #answer = generate_answer(request.q, entity_results, community_results)
-        answer = parse_graphrag_response(query_graphrag(request.q, "global"))
+        # Try to parse as JSON array first
+        try:
+            import json
+            # Look for JSON array in the response
+            json_match = re.search(r'\[.*?\]', clean_response, re.DOTALL)
+            if json_match:
+                json_str = json_match.group(0)
+                candidates_json = json.loads(json_str)
+                print(f"Successfully parsed {len(candidates_json)} candidates from JSON")
+                return candidates_json[:request.top_k]
+        except Exception as json_error:
+            print(f"JSON parsing failed: {json_error}")
         
-        # Extract candidates
-        candidates = extract_person_candidates(request.q, entity_results, request.top_k)
+        # Fallback: Extract candidates from text and format as JSON
+        candidates = []
+        lines = clean_response.split('\n')
+        current_candidate = {}
         
-        print(f"Generated answer and {len(candidates)} candidates")
+        for line in lines:
+            line = line.strip()
+            if not line:
+                continue
+                
+            # Look for candidate names (often start with numbers or bullet points)
+            name_match = re.match(r'^[\d\.\-\*\•]\s*(.+?)(?:\s*[-:]|$)', line)
+            if name_match:
+                if current_candidate:
+                    candidates.append(current_candidate)
+                current_candidate = {
+                    "candidate name": name_match.group(1).strip(),
+                    "explanation": ""
+                }
+            elif current_candidate and line:
+                # Add to explanation
+                if current_candidate["explanation"]:
+                    current_candidate["explanation"] += " "
+                current_candidate["explanation"] += line
         
-        return QueryResponse(
-            answer=answer,
-            candidates=candidates,
-            evidence=[]
-        )
+        # Add the last candidate
+        if current_candidate:
+            candidates.append(current_candidate)
+        
+        # If no candidates found, return the raw response
+        if not candidates:
+            candidates = [{
+                "candidate name": "Analysis Result",
+                "explanation": clean_response if clean_response else "No specific candidates found for your query."
+            }]
+        
+        print(f"Returning {len(candidates)} candidates")
+        return candidates[:request.top_k]
         
     except Exception as e:
         print(f"Query error: {e}")

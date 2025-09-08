@@ -76,17 +76,35 @@ export default function VoiceChat({
 
             onResponse?.(data)
 
-            const answer = data?.answer ?? "No answer."
+            // Handle new JSON array response format
+            let responseText = ""
+            if (Array.isArray(data)) {
+                if (data.length > 0) {
+                    responseText = `Found ${data.length} matching candidates:\n\n` + 
+                        data.slice(0, 3).map((candidate, idx) => 
+                            `${idx + 1}. ${candidate["candidate name"]}\n${candidate.explanation.substring(0, 150)}...`
+                        ).join('\n\n')
+                    if (data.length > 3) {
+                        responseText += `\n\n...and ${data.length - 3} more candidates. Click "View Candidates" to see all results.`
+                    }
+                } else {
+                    responseText = "No matching candidates found for your query."
+                }
+            } else {
+                responseText = data?.answer ?? "No answer received."
+            }
+            
             setMessages((m) => [
                 ...m,
-                { role: "assistant", text: String(answer) },
+                { role: "assistant", text: responseText },
             ])
 
-            if ("speechSynthesis" in window && answer) {
-                window.speechSynthesis.speak(
-                    new SpeechSynthesisUtterance(String(answer))
-                )
-            }
+            // TTS disabled for now - was annoying
+            // if ("speechSynthesis" in window && answer) {
+            //     window.speechSynthesis.speak(
+            //         new SpeechSynthesisUtterance(String(answer))
+            //     )
+            // }
         } catch (e) {
             console.error(e)
             setMessages((m) => [

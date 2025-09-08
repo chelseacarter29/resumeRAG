@@ -2,38 +2,40 @@ import React, { useState } from 'react'
 import VoiceChat from './components/VoiceChat'
 import GraphVisualization from './components/GraphVisualization'
 
-type Evidence = { 
-  chunk_id: string
-  doc_id: string
-  section?: string
-  text: string 
+// New simplified response format
+type CandidateResult = {
+  "candidate name": string
+  explanation: string
 }
 
+// For backward compatibility and internal state
 type Candidate = { 
-  personId: string
   name: string
-  score: number
-  why: string
-  evidence: Evidence[] 
+  explanation: string
 }
 
-type QueryResponse = { 
-  answer: string
-  candidates: Candidate[]
-  evidence: Evidence[]
-}
+type QueryResponse = CandidateResult[] | { candidates?: CandidateResult[] }
 
 function App() {
-  const [lastResponse, setLastResponse] = useState<QueryResponse | null>(null)
+  const [lastResponse, setLastResponse] = useState<CandidateResult[] | null>(null)
   const [transcript, setTranscript] = useState('')
   const [hasQueried, setHasQueried] = useState(false)
   const [activeTab, setActiveTab] = useState<'find' | 'visualize'>('find')
   const [isDarkMode, setIsDarkMode] = useState(false)
   const [showCandidatesPopup, setShowCandidatesPopup] = useState(false)
 
-  const handleResponse = (data: QueryResponse) => {
-    setLastResponse(data)
-    if (data.candidates && data.candidates.length > 0) {
+  const handleResponse = (data: any) => {
+    // Handle new JSON array format
+    let candidates: CandidateResult[] = []
+    
+    if (Array.isArray(data)) {
+      candidates = data
+    } else if (data.candidates && Array.isArray(data.candidates)) {
+      candidates = data.candidates
+    }
+    
+    setLastResponse(candidates)
+    if (candidates.length > 0) {
       setShowCandidatesPopup(true)
     }
   }
@@ -148,27 +150,25 @@ function App() {
         </section>
       )}
 
-      {activeTab === 'find' && lastResponse && lastResponse.answer && (
+      {activeTab === 'find' && lastResponse && lastResponse.length > 0 && (
         <section className="answer-section">
-          <h2>Answer</h2>
-          <p className="answer-text">{lastResponse.answer}</p>
-          {lastResponse.candidates && lastResponse.candidates.length > 0 && (
-            <button 
-              className="view-candidates-btn"
-              onClick={() => setShowCandidatesPopup(true)}
-            >
-              View {lastResponse.candidates.length} Candidates
-            </button>
-          )}
+          <h2>Search Results</h2>
+          <p className="answer-text">Found {lastResponse.length} matching candidates</p>
+          <button 
+            className="view-candidates-btn"
+            onClick={() => setShowCandidatesPopup(true)}
+          >
+            View {lastResponse.length} Candidates
+          </button>
         </section>
       )}
 
       {/* Candidates Side Popup */}
-      {showCandidatesPopup && lastResponse?.candidates && (
+      {showCandidatesPopup && lastResponse && lastResponse.length > 0 && (
         <div className="popup-overlay" onClick={() => setShowCandidatesPopup(false)}>
           <div className="candidates-popup" onClick={(e) => e.stopPropagation()}>
             <div className="popup-header">
-              <h2>Candidates ({lastResponse.candidates.length})</h2>
+              <h2>Candidates ({lastResponse.length})</h2>
               <button 
                 className="close-popup"
                 onClick={() => setShowCandidatesPopup(false)}
@@ -180,31 +180,17 @@ function App() {
             
             <div className="popup-content">
               <div className="candidates-list">
-                {lastResponse.candidates.map((candidate, idx) => (
-                  <div key={`${candidate.personId}-${idx}`} className="candidate-card">
+                {lastResponse.map((candidate, idx) => (
+                  <div key={`${candidate["candidate name"]}-${idx}`} className="candidate-card">
                     <div className="candidate-header">
-                      <h3>{candidate.name}</h3>
-                      <span className="score">Score: {candidate.score.toFixed(2)}</span>
+                      <h3>{candidate["candidate name"]}</h3>
+                      <span className="match-indicator">✓ Match</span>
                     </div>
                     
-                    <p className="why-text">{candidate.why}</p>
-                    
-                    {candidate.evidence && candidate.evidence.length > 0 && (
-                      <div className="evidence-snippets">
-                        <h4>Evidence</h4>
-                        {candidate.evidence.slice(0, 2).map((ev, evidx) => (
-                          <div key={`${ev.chunk_id}-${evidx}`} className="evidence-item">
-                            <div className="evidence-meta">
-                              {ev.section && <span className="section">{ev.section}</span>}
-                              <span className="doc-id">{ev.doc_id}</span>
-                            </div>
-                            <p className="evidence-text">
-                              {truncateText(ev.text, 250)}
-                            </p>
-                          </div>
-                        ))}
-                      </div>
-                    )}
+                    <div className="explanation-section">
+                      <h4>Why this candidate matches:</h4>
+                      <p className="explanation-text">{candidate.explanation}</p>
+                    </div>
                   </div>
                 ))}
               </div>
