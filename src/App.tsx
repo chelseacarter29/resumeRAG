@@ -27,10 +27,28 @@ function App() {
   const [transcript, setTranscript] = useState('')
   const [hasQueried, setHasQueried] = useState(false)
   const [activeTab, setActiveTab] = useState<'find' | 'visualize'>('find')
+  const [isDarkMode, setIsDarkMode] = useState(false)
+  const [showCandidatesPopup, setShowCandidatesPopup] = useState(false)
 
   const handleResponse = (data: QueryResponse) => {
     setLastResponse(data)
+    if (data.candidates && data.candidates.length > 0) {
+      setShowCandidatesPopup(true)
+    }
   }
+
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode)
+  }
+
+  // Apply dark mode to body element
+  React.useEffect(() => {
+    if (isDarkMode) {
+      document.body.classList.add('dark-mode')
+    } else {
+      document.body.classList.remove('dark-mode')
+    }
+  }, [isDarkMode])
 
   const handleSend = () => {
     setHasQueried(true)
@@ -40,6 +58,7 @@ function App() {
     setLastResponse(null)
     setTranscript('')
     setHasQueried(false)
+    setShowCandidatesPopup(false)
   }
 
   const exampleQueries = [
@@ -58,8 +77,17 @@ function App() {
   }
 
   return (
-    <div className="container">
+    <div className={`container ${isDarkMode ? 'dark-mode' : ''}`}>
       <header>
+        <div className="header-controls">
+          <button 
+            className="dark-mode-toggle"
+            onClick={toggleDarkMode}
+            aria-label="Toggle dark mode"
+          >
+            {isDarkMode ? '☀️' : '🌙'}
+          </button>
+        </div>
         <h1>RESUME RAG</h1>
         <p className="description">
           Search through resumes using natural language. Ask about skills, experience, companies, or any combination.
@@ -121,18 +149,37 @@ function App() {
         </section>
       )}
 
-      {activeTab === 'find' && lastResponse && (
-        <>
-          {lastResponse.answer && (
-            <section className="answer-section">
-              <h2>Answer</h2>
-              <p className="answer-text">{lastResponse.answer}</p>
-            </section>
-          )}
-
+      {activeTab === 'find' && lastResponse && lastResponse.answer && (
+        <section className="answer-section">
+          <h2>Answer</h2>
+          <p className="answer-text">{lastResponse.answer}</p>
           {lastResponse.candidates && lastResponse.candidates.length > 0 && (
-            <section className="candidates-section">
-              <h2>Candidates</h2>
+            <button 
+              className="view-candidates-btn"
+              onClick={() => setShowCandidatesPopup(true)}
+            >
+              View {lastResponse.candidates.length} Candidates
+            </button>
+          )}
+        </section>
+      )}
+
+      {/* Candidates Side Popup */}
+      {showCandidatesPopup && lastResponse?.candidates && (
+        <div className="popup-overlay" onClick={() => setShowCandidatesPopup(false)}>
+          <div className="candidates-popup" onClick={(e) => e.stopPropagation()}>
+            <div className="popup-header">
+              <h2>Candidates ({lastResponse.candidates.length})</h2>
+              <button 
+                className="close-popup"
+                onClick={() => setShowCandidatesPopup(false)}
+                aria-label="Close candidates popup"
+              >
+                ✕
+              </button>
+            </div>
+            
+            <div className="popup-content">
               <div className="candidates-list">
                 {lastResponse.candidates.map((candidate, idx) => (
                   <div key={`${candidate.personId}-${idx}`} className="candidate-card">
@@ -162,10 +209,9 @@ function App() {
                   </div>
                 ))}
               </div>
-            </section>
-          )}
-
-        </>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   )

@@ -13,6 +13,113 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark mode styles */
+body.dark-mode {
+  color: #e0e0e0;
+  background: #1a1a1a;
+}
+
+.dark-mode {
+  color: #e0e0e0;
+}
+
+.dark-mode .description {
+  color: #b0b0b0;
+}
+
+.dark-mode .tabs {
+  border-bottom-color: #333;
+}
+
+.dark-mode .tab {
+  color: #b0b0b0;
+}
+
+.dark-mode .tab:hover {
+  color: #e0e0e0;
+}
+
+.dark-mode .tab.active {
+  color: #e0e0e0;
+  border-bottom-color: #e0e0e0;
+}
+
+.dark-mode button {
+  background: #2a2a2a;
+  color: #e0e0e0;
+  border-color: #444;
+}
+
+.dark-mode button:hover:not(:disabled) {
+  border-color: #666;
+}
+
+.dark-mode textarea {
+  background: #2a2a2a;
+  color: #e0e0e0;
+  border-color: #444;
+}
+
+.dark-mode textarea:focus {
+  border-color: #666;
+}
+
+.dark-mode .example-queries {
+  background: #2a2a2a;
+}
+
+.dark-mode .example-button {
+  background: #333;
+  color: #e0e0e0;
+  border-color: #555;
+}
+
+.dark-mode .example-button:hover {
+  background: #e0e0e0;
+  color: #333;
+  border-color: #e0e0e0;
+}
+
+.dark-mode .answer-section {
+  border-top-color: #333;
+}
+
+.dark-mode .answer-text {
+  color: #e0e0e0;
+}
+
+.dark-mode .candidate-card {
+  background: #2a2a2a;
+  border-color: #444;
+}
+
+.dark-mode .candidate-header {
+  border-bottom-color: #333;
+}
+
+.dark-mode .why-text {
+  color: #b0b0b0;
+}
+
+.dark-mode .evidence-snippets {
+  border-top-color: #333;
+}
+
+.dark-mode .evidence-item {
+  background: #333;
+  border-left-color: #555;
+}
+
+.dark-mode .evidence-text {
+  color: #b0b0b0;
+}
+
+.dark-mode .coming-soon {
+  background: #2a2a2a;
+  color: #b0b0b0;
 }
 
 .container {
@@ -25,6 +132,38 @@ header {
   margin-bottom: 2rem;
   padding-bottom: 0;
   text-align: center;
+  position: relative;
+}
+
+/* Header Controls */
+.header-controls {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  gap: 1rem;
+}
+
+.dark-mode-toggle {
+  background: none !important;
+  border: 1px solid #ddd !important;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dark-mode .dark-mode-toggle {
+  border-color: #444 !important;
+}
+
+.dark-mode-toggle:hover {
+  transform: scale(1.1);
 }
 
 h1 {
@@ -293,6 +432,122 @@ textarea:focus {
   margin: 0;
 }
 
+/* View Candidates Button */
+.view-candidates-btn {
+  margin-top: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.view-candidates-btn:hover {
+  background: #0056b3;
+}
+
+.dark-mode .view-candidates-btn {
+  background: #0066cc;
+}
+
+.dark-mode .view-candidates-btn:hover {
+  background: #004499;
+}
+
+/* Popup Styles */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 2rem;
+}
+
+.dark-mode .popup-overlay {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.candidates-popup {
+  background: white;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .candidates-popup {
+  background: #2a2a2a;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+.popup-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.dark-mode .popup-header {
+  border-bottom-color: #444;
+}
+
+.popup-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.close-popup {
+  background: none !important;
+  border: none !important;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  transition: background-color 0.2s ease;
+}
+
+.close-popup:hover {
+  background: #f0f0f0 !important;
+}
+
+.dark-mode .close-popup:hover {
+  background: #444 !important;
+}
+
+.popup-content {
+  padding: 1.5rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.popup-content .candidates-list {
+  gap: 1.5rem;
+}
+
+.popup-content .candidate-card {
+  margin-bottom: 0;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .container {
@@ -301,6 +556,14 @@ textarea:focus {
   
   h1 {
     font-size: 2.5rem;
+  }
+  
+  .header-controls {
+    position: relative;
+    top: auto;
+    right: auto;
+    justify-content: center;
+    margin-bottom: 1rem;
   }
   
   .example-buttons {
@@ -328,5 +591,21 @@ textarea:focus {
   .candidate-header {
     flex-direction: column;
     gap: 0.5rem;
+  }
+  
+  .popup-overlay {
+    padding: 1rem;
+  }
+  
+  .candidates-popup {
+    max-height: 90vh;
+  }
+  
+  .popup-header {
+    padding: 1rem;
+  }
+  
+  .popup-content {
+    padding: 1rem;
   }
 }
