@@ -12,6 +12,8 @@ import numpy as np
 import networkx as nx
 from xml.etree import ElementTree as ET
 
+import subprocess 
+
 app = FastAPI(title="Resume RAG API", version="1.0.0")
 
 # Enable CORS for frontend
@@ -313,6 +315,65 @@ def generate_answer(query: str, entity_results: List[Dict], community_results: L
     
     return " ".join(answer_parts) if answer_parts else "Results found but no detailed information available."
 
+def query_graphrag(query: str, method: str = "local", root: str = Path(__file__).parent.parent / "graphrag-workspace") -> str:
+    query += " Return the response in the form of JSON: [{candidate name: <name>, explanation: <explanation>}]"
+    """Query GraphRAG with custom parameters"""
+    
+    cmd = [
+        "graphrag", "query",
+        "--root", root,
+        "--method", method,
+        "--query", query
+    ]
+    
+    try:
+        result = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            timeout=60
+        )
+        
+        if result.returncode == 0:
+            return result.stdout.strip()
+        else:
+            print(f"GraphRAG error: {result.stderr}")
+            return f"Error: {result.stderr}"
+            
+    except Exception as e:
+        return f"Error running query: {str(e)}"
+
+def parse_graphrag_response(raw_response: str) -> str:
+    """Parse GraphRAG CLI output to extract the clean answer"""
+    
+    # Remove timestamp and log prefixes
+    lines = raw_response.split('\n')
+    cleaned_lines = []
+    
+    for line in lines:
+        # Skip log lines with timestamps and INFO messages
+        if re.match(r'^\d{4}-\d{2}-\d{2}', line) or 'INFO' in line:
+            continue
+        
+        # Skip empty lines
+        if not line.strip():
+            continue
+            
+        cleaned_lines.append(line.strip())
+    
+    # Join the remaining content
+    clean_response = '\n'.join(cleaned_lines)
+    
+    # Remove "Global Search Response:" or "Local Search Response:" headers
+    clean_response = re.sub(r'^(Global|Local) Search Response:\s*', '', clean_response, flags=re.IGNORECASE)
+    
+    # Clean up extra whitespace
+    clean_response = re.sub(r'\n\s*\n', '\n\n', clean_response)
+    clean_response = clean_response.strip()
+    
+    return clean_response
+
+
 @app.on_event("startup")
 async def startup_event():
     """Load data on startup"""
@@ -356,7 +417,8 @@ async def query_resumes(request: QueryRequest):
         print(f"Found {len(entity_results)} entity results, {len(community_results)} community results")
         
         # Generate answer
-        answer = generate_answer(request.q, entity_results, community_results)
+        #answer = generate_answer(request.q, entity_results, community_results)
+        answer = parse_graphrag_response(query_graphrag(request.q, "global"))
         
         # Extract candidates
         candidates = extract_person_candidates(request.q, entity_results, request.top_k)
