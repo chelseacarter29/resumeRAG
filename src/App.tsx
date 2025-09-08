@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import VoiceChat from './components/VoiceChat'
+import GraphVisualization from './components/GraphVisualization'
 
 type Evidence = { 
   chunk_id: string
@@ -143,9 +144,7 @@ function App() {
       
       {activeTab === 'visualize' && (
         <section className="visualize-section">
-          <div className="coming-soon">
-            <p>Visualization features coming soon...</p>
-          </div>
+          <GraphVisualization />
         </section>
       )}
 
