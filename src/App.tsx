@@ -24,9 +24,32 @@ type QueryResponse = {
 
 function App() {
   const [lastResponse, setLastResponse] = useState<QueryResponse | null>(null)
+  const [transcript, setTranscript] = useState('')
+  const [hasQueried, setHasQueried] = useState(false)
+  const [activeTab, setActiveTab] = useState<'find' | 'visualize'>('find')
 
   const handleResponse = (data: QueryResponse) => {
     setLastResponse(data)
+  }
+
+  const handleSend = () => {
+    setHasQueried(true)
+  }
+
+  const resetInterface = () => {
+    setLastResponse(null)
+    setTranscript('')
+    setHasQueried(false)
+  }
+
+  const exampleQueries = [
+    "Candidates with Databricks and dbt experience",
+    "SQL performance tuning in last 2 years",
+    "Python developers with MLOps skills"
+  ]
+
+  const handleExampleClick = (query: string) => {
+    setTranscript(query)
   }
 
   const truncateText = (text: string, maxLength: number = 200) => {
@@ -37,17 +60,68 @@ function App() {
   return (
     <div className="container">
       <header>
-        <h1>Voice Query Interface</h1>
+        <h1>RESUME RAG</h1>
+        <p className="description">
+          Search through resumes using natural language. Ask about skills, experience, companies, or any combination.
+        </p>
+        
+        <div className="tabs">
+          <button 
+            className={`tab ${activeTab === 'find' ? 'active' : ''}`}
+            onClick={() => {
+              setActiveTab('find')
+              resetInterface()
+            }}
+          >
+            Find Candidates
+          </button>
+          <button 
+            className={`tab ${activeTab === 'visualize' ? 'active' : ''}`}
+            onClick={() => setActiveTab('visualize')}
+          >
+            Visualize
+          </button>
+        </div>
       </header>
 
-      <section className="voice-section">
-        <VoiceChat 
-          endpoint="http://localhost:8000/query" 
-          onResponse={handleResponse}
-        />
-      </section>
+      {activeTab === 'find' && (
+        <section className="voice-section">
+          <VoiceChat 
+            endpoint="http://localhost:8000/query" 
+            onResponse={handleResponse}
+            transcript={transcript}
+            setTranscript={setTranscript}
+            onSend={handleSend}
+          />
+          
+          {!hasQueried && (
+            <div className="example-queries">
+              <p className="example-label">Try these examples:</p>
+              <div className="example-buttons">
+                {exampleQueries.map((query, idx) => (
+                  <button 
+                    key={idx}
+                    className="example-button"
+                    onClick={() => handleExampleClick(query)}
+                  >
+                    {query}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </section>
+      )}
+      
+      {activeTab === 'visualize' && (
+        <section className="visualize-section">
+          <div className="coming-soon">
+            <p>Visualization features coming soon...</p>
+          </div>
+        </section>
+      )}
 
-      {lastResponse && (
+      {activeTab === 'find' && lastResponse && (
         <>
           {lastResponse.answer && (
             <section className="answer-section">

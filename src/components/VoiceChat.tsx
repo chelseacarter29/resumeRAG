@@ -6,15 +6,24 @@ type Msg = { role: "user" | "assistant"; text: string }
 export default function VoiceChat({
     endpoint = "http://localhost:8000/query", // <-- FastAPI endpoint only
     onResponse,
+    transcript: externalTranscript,
+    setTranscript: externalSetTranscript,
+    onSend,
 }: {
     endpoint?: string
     onResponse?: (data: any) => void
+    transcript?: string
+    setTranscript?: (value: string) => void
+    onSend?: () => void
 }) {
     const [listening, setListening] = React.useState(false)
-    const [transcript, setTranscript] = React.useState("")
+    const [internalTranscript, setInternalTranscript] = React.useState("")
     const [messages, setMessages] = React.useState<Msg[]>([])
     const [sending, setSending] = React.useState(false)
     const recRef = React.useRef<SpeechRecognition | null>(null)
+    
+    const transcript = externalTranscript !== undefined ? externalTranscript : internalTranscript
+    const setTranscript = externalSetTranscript || setInternalTranscript
 
     const start = () => {
         const SR: any =
@@ -48,6 +57,7 @@ export default function VoiceChat({
         setSending(true)
         setMessages((m) => [...m, { role: "user", text: q }])
         setTranscript("")
+        onSend?.()
 
         const body = {
             q,

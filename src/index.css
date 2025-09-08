@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Lora:wght@400;500;600&display=swap');
 
 * {
   margin: 0;
@@ -7,7 +7,7 @@
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  font-family: 'Lora', Georgia, serif;
   color: #000;
   background: #fff;
   line-height: 1.6;
@@ -22,16 +22,71 @@ body {
 }
 
 header {
-  margin-bottom: 3rem;
-  padding-bottom: 2rem;
-  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 2rem;
+  padding-bottom: 0;
+  text-align: center;
 }
 
 h1 {
   font-family: 'Instrument Serif', serif;
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: 400;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.02em;
+  margin-bottom: 0.75rem;
+}
+
+.description {
+  font-size: 1.1rem;
+  color: #555;
+  max-width: 600px;
+  margin: 0 auto 2rem auto;
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.tab {
+  padding: 1rem 2rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font-size: 1rem;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Lora', Georgia, serif;
+}
+
+.tab:hover {
+  color: #000;
+}
+
+.tab.active {
+  color: #000;
+  border-bottom-color: #000;
+  font-weight: 500;
+}
+
+/* Coming Soon */
+.visualize-section {
+  padding: 4rem 0;
+  text-align: center;
+}
+
+.coming-soon {
+  padding: 3rem;
+  background: #f8f8f8;
+  border-radius: 8px;
+  color: #666;
+  font-style: italic;
 }
 
 h2 {
@@ -100,6 +155,47 @@ textarea:focus {
 /* Voice Section */
 .voice-section {
   margin-bottom: 3rem;
+}
+
+/* Example Queries */
+.example-queries {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: #f8f8f8;
+  border-radius: 8px;
+}
+
+.example-label {
+  font-size: 0.875rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.example-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.example-button {
+  padding: 0.6rem 1.2rem;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  font-size: 0.95rem;
+  color: #333;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.example-button:hover {
+  background: #333;
+  color: white;
+  border-color: #333;
 }
 
 /* Answer Section */
@@ -204,7 +300,25 @@ textarea:focus {
   }
   
   h1 {
-    font-size: 2rem;
+    font-size: 2.5rem;
+  }
+  
+  .example-buttons {
+    flex-direction: column;
+  }
+  
+  .example-button {
+    width: 100%;
+  }
+  
+  .tabs {
+    flex-direction: row;
+  }
+  
+  .tab {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
   }
   
   h2 {
