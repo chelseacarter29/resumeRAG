@@ -1,7 +1,5 @@
 # ResumeRAG: Intelligent Resume Search with Graph-Based Knowledge Discovery
 
-## 🎯 Problem Statement
-
 Recruiters often waste time on irrelevant matches or miss strong candidates entirely, resulting in slower hiring and overlooked talent. Traditional resume filtering relies on simple keyword matching, which fails to capture the nuanced relationships between skills, experiences, and roles. This leads to:
 
 - **Poor candidate matching**: Keyword searches miss candidates with relevant but differently-worded experience
@@ -9,13 +7,13 @@ Recruiters often waste time on irrelevant matches or miss strong candidates enti
 - **Inefficient screening**: Recruiters spend hours manually reviewing irrelevant resumes
 - **Missed connections**: No way to discover candidates with complementary skills or career progression patterns
 
-## 🚀 Our Solution
+## Our Solution
 
 ResumeRAG tackles the broken resume filtering process by moving beyond traditional keyword search to a graph-based approach using GraphRAG that actually understands relationships between skills, roles, and experiences.
 
 Our solution builds a knowledge graph of resumes using GraphRAG, then lets users query it in natural language to discover and visualize relevant information. We implemented this with Python, GraphRAG, FastAPI, and React, layering LLM-driven context and visualization on top to make resume search more accurate, transparent, and useful.
 
-## ✨ Key Capabilities
+## Key Capabilities
 
 ### 🧠 Intelligent Natural Language Queries
 - **Semantic Understanding**: Ask questions like "Find me candidates with blockchain industry experience" or "Show me someone who transitioned from software to finance"
@@ -162,19 +160,11 @@ The system expects resume data in a structured format. The current implementatio
 - **Skills**: Technical skills, programming languages, tools
 - **Projects**: Project descriptions, technologies used, outcomes
 
-## 🤝 Contributing
-
-We welcome contributions! Please feel free to:
-- Report bugs or issues
-- Suggest new features
-- Submit pull requests
-- Improve documentation
-
-## 📄 License
+## License
 
 This project is open source and available under the MIT License.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - **GraphRAG**: Microsoft's framework for building knowledge graphs from unstructured text
 - **OpenAI**: For providing the LLM capabilities that power our natural language understanding
@@ -183,4 +173,4 @@ This project is open source and available under the MIT License.
 
 ---
 
-**ResumeRAG** - Making resume search intelligent, visual, and efficient. 🚀
+**ResumeRAG** - Making resume search intelligent, visual, and efficient.
