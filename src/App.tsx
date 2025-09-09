@@ -65,9 +65,9 @@ function App() {
   }
 
   const exampleQueries = [
-    "Candidates with Databricks and dbt experience",
-    "SQL performance tuning in last 2 years",
-    "Python developers with MLOps skills"
+    "Find me a candidate who has blockchain industry experience",
+    "Show me a candidate with a strong fullstack builder profile",
+    "Show me some candidates with strong interdisciplinary experience"
   ]
 
   const handleExampleClick = (query: string) => {
