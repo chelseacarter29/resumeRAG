@@ -59,7 +59,7 @@ const GraphVisualization: React.FC = () => {
       setLoading(true);
       
       // Fetch graph data from the backend API
-      const response = await fetch('http://localhost:8000/graph-data');
+      const response = await fetch('/api/graph-data');
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }

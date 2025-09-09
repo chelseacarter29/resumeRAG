@@ -9,12 +9,12 @@ type CandidateResult = {
 }
 
 // For backward compatibility and internal state
-type Candidate = { 
-  name: string
-  explanation: string
-}
+// type Candidate = { 
+//   name: string
+//   explanation: string
+// }
 
-type QueryResponse = CandidateResult[] | { candidates?: CandidateResult[] }
+// type QueryResponse = CandidateResult[] | { candidates?: CandidateResult[] }
 
 function App() {
   const [lastResponse, setLastResponse] = useState<CandidateResult[] | null>(null)
@@ -74,10 +74,10 @@ function App() {
     setTranscript(query)
   }
 
-  const truncateText = (text: string, maxLength: number = 200) => {
-    if (text.length <= maxLength) return text
-    return text.slice(0, maxLength) + '...'
-  }
+  // const truncateText = (text: string, maxLength: number = 200) => {
+  //   if (text.length <= maxLength) return text
+  //   return text.slice(0, maxLength) + '...'
+  // }
 
   return (
     <div className={`container ${isDarkMode ? 'dark-mode' : ''}`}>
@@ -118,7 +118,7 @@ function App() {
       {activeTab === 'find' && (
         <section className="voice-section">
           <VoiceChat 
-            endpoint="http://localhost:8000/query" 
+            endpoint="/api/query" 
             onResponse={handleResponse}
             transcript={transcript}
             setTranscript={setTranscript}
