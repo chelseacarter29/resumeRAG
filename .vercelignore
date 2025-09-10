@@ -10,3 +10,6 @@ backend/
 dist
 .vscode
 .idea
+graphrag-workspace/cache/
+graphrag-workspace/output/lancedb/
+graphrag-workspace/logs/

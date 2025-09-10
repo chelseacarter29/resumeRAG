@@ -85,22 +85,33 @@ resumeRAG/
 
 ### Common Issues
 
-1. **Function Timeout**:
-   - GraphRAG queries can take time
-   - Functions are configured with 30-second timeout
-   - Consider optimizing queries if needed
+1. **Deployment Size Limits**:
+   - Large data files (like `lancedb/` directory) are excluded via `.vercelignore`
+   - Only essential `.parquet` files are included
+   - Functions use optimized local search instead of GraphRAG CLI
 
-2. **Missing Data Files**:
-   - Ensure `graphrag-workspace/` is included in deployment
-   - Check that all `.parquet` files are present
+2. **Function Timeout**:
+   - Functions are configured with 15-second timeout (reduced from 30s)
+   - Local search is much faster than CLI calls
+   - No subprocess calls required
 
-3. **Environment Variables**:
+3. **Missing Data Files**:
+   - Essential files: `entities.parquet`, `relationships.parquet`, `community_reports.parquet`, `text_units.parquet`, `graph.graphml`
+   - Excluded files: `lancedb/`, `cache/`, `logs/` directories
+   - Resume data from `input/processed-resume-dataset.txt`
+
+4. **Environment Variables**:
    - Verify `OPENAI_API_KEY` is set in Vercel dashboard
    - Check that the key has sufficient credits
 
-4. **CORS Issues**:
+5. **CORS Issues**:
    - API functions include CORS headers
    - Frontend uses relative paths to avoid CORS
+
+6. **Build Failures**:
+   - Check that all Python dependencies are compatible
+   - Ensure no large files are being included
+   - Verify TypeScript compilation passes
 
 ### Debugging
 

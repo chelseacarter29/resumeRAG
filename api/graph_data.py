@@ -23,7 +23,7 @@ def load_data():
     global entities_df, relationships_df, communities_df, text_units_df, graph, resume_data
     
     try:
-        # Load parquet files
+        # Load parquet files (only essential ones for Vercel)
         entities_df = pd.read_parquet(DATA_DIR / "entities.parquet")
         relationships_df = pd.read_parquet(DATA_DIR / "relationships.parquet")
         communities_df = pd.read_parquet(DATA_DIR / "community_reports.parquet")

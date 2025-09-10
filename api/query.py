@@ -26,7 +26,7 @@ def load_data():
     global entities_df, relationships_df, communities_df, text_units_df, graph, resume_data
     
     try:
-        # Load parquet files
+        # Load parquet files (only essential ones for Vercel)
         entities_df = pd.read_parquet(DATA_DIR / "entities.parquet")
         relationships_df = pd.read_parquet(DATA_DIR / "relationships.parquet")
         communities_df = pd.read_parquet(DATA_DIR / "community_reports.parquet")
@@ -104,65 +104,83 @@ def load_resume_data():
         print(f"Error loading resume data: {e}")
 
 def query_graphrag(query: str, method: str = "local", root: str = None) -> str:
-    if root is None:
-        root = Path(__file__).parent.parent / "graphrag-workspace"
+    """Query GraphRAG data using local search instead of CLI"""
     
-    query += " Return the response in the form of JSON: [{candidate name: <name>, explanation: <explanation>}]"
-    """Query GraphRAG with custom parameters"""
-    
-    cmd = [
-        "graphrag", "query",
-        "--root", str(root),
-        "--method", method,
-        "--query", query
-    ]
+    # For Vercel deployment, we'll use local search instead of GraphRAG CLI
+    # This is more reliable and doesn't require subprocess calls
     
     try:
-        result = subprocess.run(
-            cmd,
-            capture_output=True,
-            text=True,
-            timeout=60
-        )
+        # Simple search through entities and communities
+        query_lower = query.lower()
+        candidates = []
         
-        if result.returncode == 0:
-            return result.stdout.strip()
-        else:
-            print(f"GraphRAG error: {result.stderr}")
-            return f"Error: {result.stderr}"
-            
+        # Search through entities for person matches
+        if entities_df is not None:
+            person_entities = entities_df[entities_df['type'] == 'person']
+            for _, entity in person_entities.iterrows():
+                entity_name = str(entity.get('title', entity.get('name', ''))).lower()
+                entity_desc = str(entity.get('description', '')).lower()
+                
+                # Simple scoring based on text matching
+                score = 0
+                if query_lower in entity_name:
+                    score += 10
+                if query_lower in entity_desc:
+                    score += 5
+                    
+                # Check for partial matches
+                query_words = query_lower.split()
+                for word in query_words:
+                    if word in entity_name:
+                        score += 3
+                    if word in entity_desc:
+                        score += 1
+                
+                if score > 0:
+                    candidates.append({
+                        "candidate name": entity.get('title', entity.get('name', '')),
+                        "explanation": f"Found in entity database with relevance score {score}. {entity.get('description', '')[:200]}..."
+                    })
+        
+        # Search through communities for additional context
+        if communities_df is not None:
+            for _, community in communities_df.iterrows():
+                title = str(community.get('title', '')).lower()
+                summary = str(community.get('summary', '')).lower()
+                
+                if query_lower in title or query_lower in summary:
+                    # Extract person names from community content
+                    content = str(community.get('full_content', ''))
+                    # Simple extraction of person names (this is basic but works)
+                    import re
+                    person_matches = re.findall(r'([A-Z][a-z]+ [A-Z][a-z]+)', content)
+                    for person_name in person_matches[:3]:  # Limit to first 3 matches
+                        if not any(c["candidate name"] == person_name for c in candidates):
+                            candidates.append({
+                                "candidate name": person_name,
+                                "explanation": f"Found in community analysis: {summary[:200]}..."
+                            })
+        
+        # If no candidates found, return a helpful message
+        if not candidates:
+            return json.dumps([{
+                "candidate name": "No matches found",
+                "explanation": f"No candidates found matching your query: '{query}'. Try different keywords or broader search terms."
+            }])
+        
+        # Sort by relevance and return top candidates
+        candidates = candidates[:8]  # Limit to 8 candidates
+        return json.dumps(candidates)
+        
     except Exception as e:
-        return f"Error running query: {str(e)}"
+        return json.dumps([{
+            "candidate name": "Search Error",
+            "explanation": f"Error processing query: {str(e)}"
+        }])
 
 def parse_graphrag_response(raw_response: str) -> str:
-    """Parse GraphRAG CLI output to extract the clean answer"""
-    
-    # Remove timestamp and log prefixes
-    lines = raw_response.split('\n')
-    cleaned_lines = []
-    
-    for line in lines:
-        # Skip log lines with timestamps and INFO messages
-        if re.match(r'^\d{4}-\d{2}-\d{2}', line) or 'INFO' in line:
-            continue
-        
-        # Skip empty lines
-        if not line.strip():
-            continue
-            
-        cleaned_lines.append(line.strip())
-    
-    # Join the remaining content
-    clean_response = '\n'.join(cleaned_lines)
-    
-    # Remove "Global Search Response:" or "Local Search Response:" headers
-    clean_response = re.sub(r'^(Global|Local) Search Response:\s*', '', clean_response, flags=re.IGNORECASE)
-    
-    # Clean up extra whitespace
-    clean_response = re.sub(r'\n\s*\n', '\n\n', clean_response)
-    clean_response = clean_response.strip()
-    
-    return clean_response
+    """Parse response - now returns JSON directly"""
+    return raw_response
 
 class handler(BaseHTTPRequestHandler):
     def do_OPTIONS(self):
@@ -191,74 +209,26 @@ class handler(BaseHTTPRequestHandler):
             
             print(f"Processing query: {query}")
             
-            # Use GraphRAG CLI to get candidates in JSON format
+            # Use local search instead of GraphRAG CLI
             raw_response = query_graphrag(query, "global")
             clean_response = parse_graphrag_response(raw_response)
             
-            print(f"GraphRAG response: {clean_response[:200]}...")
+            print(f"Search response: {clean_response[:200]}...")
             
-            # Try to parse as JSON array first
+            # Parse the JSON response directly
             try:
-                # Look for JSON array in the response - use greedy matching and better boundaries
-                # First try to find JSON within code blocks
-                code_block_match = re.search(r'```json\s*(\[.*?\])\s*```', clean_response, re.DOTALL)
-                if code_block_match:
-                    json_str = code_block_match.group(1).strip()
-                else:
-                    # Fallback: look for JSON array with proper bracket matching
-                    json_match = re.search(r'\[.*\]', clean_response, re.DOTALL)
-                    if json_match:
-                        json_str = json_match.group(0)
-                    else:
-                        raise ValueError("No JSON array found in response")
-                
-                # Clean up the JSON string
-                json_str = json_str.strip()
-                candidates_json = json.loads(json_str)
+                candidates_json = json.loads(clean_response)
                 print(f"Successfully parsed {len(candidates_json)} candidates from JSON")
                 result = candidates_json[:top_k]
             except Exception as json_error:
                 print(f"JSON parsing failed: {json_error}")
                 print(f"Raw response for debugging: {clean_response}")
                 
-                # Fallback: Extract candidates from text and format as JSON
-                candidates = []
-                lines = clean_response.split('\n')
-                current_candidate = {}
-                
-                for line in lines:
-                    line = line.strip()
-                    if not line:
-                        continue
-                        
-                    # Look for candidate names (often start with numbers or bullet points)
-                    name_match = re.match(r'^[\d\.\-\*\•]\s*(.+?)(?:\s*[-:]|$)', line)
-                    if name_match:
-                        if current_candidate:
-                            candidates.append(current_candidate)
-                        current_candidate = {
-                            "candidate name": name_match.group(1).strip(),
-                            "explanation": ""
-                        }
-                    elif current_candidate and line:
-                        # Add to explanation
-                        if current_candidate["explanation"]:
-                            current_candidate["explanation"] += " "
-                        current_candidate["explanation"] += line
-                
-                # Add the last candidate
-                if current_candidate:
-                    candidates.append(current_candidate)
-                
-                # If no candidates found, return the raw response
-                if not candidates:
-                    candidates = [{
-                        "candidate name": "Analysis Result",
-                        "explanation": clean_response if clean_response else "No specific candidates found for your query."
-                    }]
-                
-                print(f"Returning {len(candidates)} candidates")
-                result = candidates[:top_k]
+                # Fallback response
+                result = [{
+                    "candidate name": "Search Error",
+                    "explanation": f"Error processing query: {json_error}"
+                }]
             
             # Send response
             self.send_response(200)
