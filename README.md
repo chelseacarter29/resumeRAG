@@ -174,3 +174,4 @@ This project is open source and available under the MIT License.
 ---
 
 **ResumeRAG** - Making resume search intelligent, visual, and efficient.
+# Vercel deployment trigger - Tue Sep  9 17:25:34 PDT 2025
