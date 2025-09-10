@@ -1,18 +1,16 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
+  "functions": {
+    "api/query.py": {
+      "maxDuration": 15
     },
-    {
-      "src": "api/**/*.py",
-      "use": "@vercel/python"
+    "api/graph_data.py": {
+      "maxDuration": 15
+    },
+    "api/health.py": {
+      "maxDuration": 5
     }
-  ],
+  },
   "routes": [
     {
       "src": "/api/(.*)",
@@ -25,17 +23,6 @@
   ],
   "env": {
     "OPENAI_API_KEY": "@openai_api_key"
-  },
-  "functions": {
-    "api/query.py": {
-      "maxDuration": 15
-    },
-    "api/graph_data.py": {
-      "maxDuration": 15
-    },
-    "api/health.py": {
-      "maxDuration": 5
-    }
   },
   "build": {
     "env": {
