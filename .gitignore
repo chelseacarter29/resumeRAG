@@ -36,6 +36,7 @@ lerna-debug.log*
 .env.development.local
 .env.test.local
 .env.production.local
+RRenv/ #virtual env name
 
 # Other
 __pycache__/
